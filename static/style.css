@@ -1,0 +1,9 @@
+form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+label, input, select {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
