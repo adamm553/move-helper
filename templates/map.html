@@ -1,33 +1,45 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Mapa</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>Mapa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_map.css') }}">
 </head>
 <body>
-    <h2>Mapa</h2>
-    <div id="map"></div>
+  <h2 style="text-align: center;">Mapa</h2>
+  <!-- Oba elementy w jednym kontenerze -->
+  <div class="container">
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+    <div class="side-panel">
+      <h2>Kategorie</h2>
+      <label for="kategoria">Wybierz kategorię:</label>
+      <select id="kategoria" name="kategoria">
+        <option value="restaurant">Restauracje</option>
+        <option value="hospital">Szpitale</option>
+        <option value="school">Szkoły</option>
+       </select>
+      <label for="radius">Promień:</label>
+      <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
 
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script> 
-    <script>
-        var lat = parseFloat("{{ lat }}");
-        var lon = parseFloat("{{ lon }}");
+      <button id="find-btn">Szukaj</button>
+    </div>
+  </div>
 
-        var map = L.map('map').setView([lat, lon], 15);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        L.marker([lat, lon]).addTo(map)
-        .bindPopup('Tutaj jest adres')
-        .openPopup();
-    </script>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script> 
+  <script>
+    var lat = parseFloat("{{ lat }}");
+    var lon = parseFloat("{{ lon }}");
+    var map = L.map('map').setView([lat, lon], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+    L.marker([lat, lon]).addTo(map)
+      .bindPopup('Tutaj jest adres')
+      .openPopup();
+  </script>
 </body>
 </html>
-
-
