@@ -7,3 +7,8 @@ label, input, select {
     width: 100%;
     margin-bottom: 10px;
 }
+
+#map {
+    height: 500px; width: 50%;
+}
+
