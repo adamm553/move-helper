@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Move Helper</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Podaj adres miejsca przeprowadzki</h1>
+    <form method="POST" action="/">
+        <label for="wojewodztwo">Województwo:</label>
+        <select id="wojewodztwo" name="wojewodztwo">
+            <option value="">-- wybierz województwo --</option>
+            {% for woj in wojewodztwa %}
+                <option value="{{ woj }}">{{ woj|capitalize }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="miasto">Miasto:</label>
+        <input type="text" id="miasto" name="miasto" placeholder="Wpisz miasto">
+
+        <label for="ulica">Ulica:</label>
+        <input type="text" id="ulica" name="ulica" placeholder="Wpisz ulicę">
+
+        <label for="numer">Numer budynku:</label>
+        <input type="text" id="numer" name="numer" placeholder="Wpisz numer budynku">
+
+        <input type="submit" value="Wyślij">
+    </form>
+</body>
+</html>
