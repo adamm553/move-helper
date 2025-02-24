@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
+
+    <style>
+        #map { height: 500px; width: 100%;}
+    </style>
+</head>
+<body>
+    <h1>Mapa</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script> 
+    <script>
+        var lat = parseFloat("{{ lat }}");
+        var lon = parseFloat("{{ lon }}");
+
+        var map = L.map('map').setView([lat, lon], 15);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+        .bindPopup('Tutaj jest adres')
+        .openPopup();
+    </script>
+</body>
+</html>
+
+
