@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-sA+e2giZt3qM0hDg9bQTnmw1r7pbt1M8a9M7/4HkX2M="
+        crossorigin=""/>
+    <style>
+        #map { height: 500px; width: 100%;}
+    </style>
+</head>
+<body>
+    <h1>Mapa</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+          integrity="sha256-DvNn0CxDeKxD4rVtUJ0DeFO9LMH6hZ7cF5McuM6Bz9A="
+          crossorigin=""></script> 
+    <script>
+        var lat = {{ lat }};
+        var lon = {{ lon }};
+
+        var map = L.map('map').setView([lat, lon], 15);
+
+        L.titleLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        L.marker([lat, lon]).addTo(map)
+        .bindPopup('Tutaj jest adres')
+        .openPopup();
+    </script>
+</body>
+</html>
