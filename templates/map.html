@@ -1,33 +1,50 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Mapa</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
+  <meta charset="UTF-8">
+  <title>Mapa z kategoriami</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles_map.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h2>Mapa</h2>
-    <div id="map"></div>
+  <h2 style="text-align: center;">Mapa</h2>
+  <div class="container">
+    <div class="map-container">
+      <div id="map" data-lat="{{ lat }}" data-lon="{{ lon }}"></div>
+    </div>
+    <div class="side-panel">
+      <h2>Kategorie</h2>
+      <label for="kategoria">Wybierz kategorię:</label>
+      <select id="kategoria" name="kategoria">
+        <option value="restaurant">Restauracja</option>
+        <option value="school">Szkoła</option>
+        <option value="hospital">Szpital</option>
+        <option value="bar">Bar</option>
+        <option value="cafe">Kawiarnia</option>
+        <option value="place_of_worship">Kościół</option>
+        <option value="fast_food">Restauracja fast food</option>
+        <option value="college">Uczelnia</option>
+        <option value="driving_school">Szkoła jazdy</option>
+        <option value="kindergarten">Przedszkole</option>
+        <option value="parking">Parking</option>
+        <option value="pharmacy">Apteka</option>
+        <option value="casino">Kasyno</option>
+        <option value="cinema">Kino</option>
+        <option value="courthouse">Sąd</option>
+        <option value="fire_station">Straz pozarna</option>
+        <option value="police">Policja</option>
+      </select>
 
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script> 
-    <script>
-        var lat = parseFloat("{{ lat }}");
-        var lon = parseFloat("{{ lon }}");
+      <label for="radius">Promień (w kilometrach):</label>
+      <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
 
-        var map = L.map('map').setView([lat, lon], 15);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        L.marker([lat, lon]).addTo(map)
-        .bindPopup('Tutaj jest adres')
-        .openPopup();
-    </script>
+      <button id="find-btn">Znajdź pod promieniem</button>
+    </div>
+  </div>
+  
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
+  <script src="{{ url_for('static', filename='js/map_init.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/overpass.js') }}"></script>
 </body>
 </html>
-
-

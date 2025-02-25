@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.map-container {
+  flex: 2;
+}
+#map {
+  height: 500px;
+  width: 100%;
+}
+
+.side-panel {
+  flex: 1;
+  background: #f2f2f2;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.side-panel h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.side-panel input[type="text"],
+.side-panel select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.side-panel button {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.side-panel button:hover {
+  background-color: #45a049;
+}
