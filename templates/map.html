@@ -10,7 +10,6 @@
   <h2 style="text-align: center;">Mapa</h2>
   <div class="container">
     <div class="map-container">
-      <!-- Przekazujemy lat i lon jako atrybuty data- -->
       <div id="map" data-lat="{{ lat }}" data-lon="{{ lon }}"></div>
     </div>
     <div class="side-panel">
@@ -20,6 +19,20 @@
         <option value="restaurant">Restauracja</option>
         <option value="school">Szkoła</option>
         <option value="hospital">Szpital</option>
+        <option value="bar">Bar</option>
+        <option value="cafe">Kawiarnia</option>
+        <option value="place_of_worship">Kościół</option>
+        <option value="fast_food">Restauracja fast food</option>
+        <option value="college">Uczelnia</option>
+        <option value="driving_school">Szkoła jazdy</option>
+        <option value="kindergarten">Przedszkole</option>
+        <option value="parking">Parking</option>
+        <option value="pharmacy">Apteka</option>
+        <option value="casino">Kasyno</option>
+        <option value="cinema">Kino</option>
+        <option value="courthouse">Sąd</option>
+        <option value="fire_station">Straz pozarna</option>
+        <option value="police">Policja</option>
       </select>
 
       <label for="radius">Promień (w kilometrach):</label>
@@ -30,9 +43,7 @@
   </div>
   
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
-  <!-- Plik inicjalizacji mapy -->
   <script src="{{ url_for('static', filename='map_init.js') }}"></script>
-  <!-- Plik z funkcjami Overpass API -->
   <script src="{{ url_for('static', filename='overpass.js') }}"></script>
 </body>
 </html>
