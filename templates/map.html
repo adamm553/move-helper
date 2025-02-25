@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <title>Mapa z kategoriami</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_map.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles_map.css') }}">
+
 </head>
 <body>
   <h2 style="text-align: center;">Mapa</h2>
@@ -43,7 +44,7 @@
   </div>
   
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
-  <script src="{{ url_for('static', filename='map_init.js') }}"></script>
-  <script src="{{ url_for('static', filename='overpass.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/map_init.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/overpass.js') }}"></script>
 </body>
 </html>

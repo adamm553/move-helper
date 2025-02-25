@@ -1,8 +1,6 @@
-// Tworzymy warstwę na nowe markery, aby móc je łatwo usuwać
 var markersLayer = L.layerGroup().addTo(window.myMap);
 
 function fetchPOIs(category, radius) {
-  // Używamy środka mapy jako punktu odniesienia
   var center = window.myMap.getCenter();
   var query = `
     [out:json][timeout:25];
@@ -22,7 +20,7 @@ function fetchPOIs(category, radius) {
   .then(text => {
     try {
       var data = JSON.parse(text);
-      markersLayer.clearLayers(); // Czyścimy poprzednie markery
+      markersLayer.clearLayers(); 
       
       data.elements.forEach(function(element) {
         var elLat, elLon;
@@ -34,8 +32,11 @@ function fetchPOIs(category, radius) {
           elLon = element.center.lon;
         }
         if (elLat && elLon) {
+          var popupText = (element.tags && element.tags.name) 
+            ? element.tags.name
+            : (category.charAt(0).toUpperCase() + category.slice(1));
           L.marker([elLat, elLon]).addTo(markersLayer)
-            .bindPopup(`${category.charAt(0).toUpperCase() + category.slice(1)}`);
+            .bindPopup(popupText);
         }
       });
     } catch (e) {
@@ -46,7 +47,6 @@ function fetchPOIs(category, radius) {
   .catch(error => console.error("Błąd podczas pobierania danych:", error));
 }
 
-// Obsługa przycisku "Znajdź pod promieniem"
 document.getElementById('find-btn').addEventListener('click', function() {
   var category = document.getElementById('kategoria').value;
   var radiusKm = document.getElementById('radius').value;
@@ -54,7 +54,6 @@ document.getElementById('find-btn').addEventListener('click', function() {
     alert("Proszę podać poprawny promień (w kilometrach).");
     return;
   }
-  // Przeliczamy kilometry na metry
   var radius = parseFloat(radiusKm) * 1000;
   console.log("Wybrana kategoria:", category, "Promień (w metrach):", radius);
   fetchPOIs(category, radius);
