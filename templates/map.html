@@ -10,7 +10,8 @@
   <h2 style="text-align: center;">Mapa</h2>
   <div class="container">
     <div class="map-container">
-      <div id="map"></div>
+      <!-- Przekazujemy lat i lon jako atrybuty data- -->
+      <div id="map" data-lat="{{ lat }}" data-lon="{{ lon }}"></div>
     </div>
     <div class="side-panel">
       <h2>Kategorie</h2>
@@ -21,7 +22,7 @@
         <option value="hospital">Szpital</option>
       </select>
 
-      <label for="radius">Promień (w metrach):</label>
+      <label for="radius">Promień (w kilometrach):</label>
       <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
 
       <button id="find-btn">Znajdź pod promieniem</button>
@@ -29,75 +30,9 @@
   </div>
   
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
-  <script>
-    var lat = parseFloat("{{ lat }}");
-    var lon = parseFloat("{{ lon }}");
-    var map = L.map('map').setView([lat, lon], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
-    L.marker([lat, lon]).addTo(map)
-      .bindPopup('Tutaj jest adres')
-      .openPopup();
-
-    var markersLayer = L.layerGroup().addTo(map);
-
-    function fetchPOIs(category, radius) {
-
-      var query = `
-        [out:json];
-        (
-          node["amenity"="${category}"](around:${radius},${lat},${lon});
-          way["amenity"="${category}"](around:${radius},${lat},${lon});
-          relation["amenity"="${category}"](around:${radius},${lat},${lon});
-        );
-        out center;
-      `;
-      
-      fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        body: query
-      })
-      .then(response => {
-        return response.text();
-      })
-      .then(text => {
-        try {
-          var data = JSON.parse(text);
-          markersLayer.clearLayers();
-          data.elements.forEach(function(element) {
-            var elLat, elLon;
-            if (element.type === "node") {
-              elLat = element.lat;
-              elLon = element.lon;
-            } else if (element.center) {
-              elLat = element.center.lat;
-              elLon = element.center.lon;
-            }
-            if (elLat && elLon) {
-              L.marker([elLat, elLon]).addTo(markersLayer)
-                .bindPopup(`${category.charAt(0).toUpperCase() + category.slice(1)}`);
-            }
-          });
-        } catch (e) {
-          console.error("Błąd podczas parsowania danych:", e);
-          console.error("Otrzymany tekst:", text);
-        }
-      })
-      .catch(error => console.error("Błąd podczas pobierania danych:", error));
-    }
-
-    document.getElementById('find-btn').addEventListener('click', function() {
-      var category = document.getElementById('kategoria').value;
-      var radius = document.getElementById('radius').value;
-      if (!radius || isNaN(radius)) {
-        alert("Proszę podać poprawny promień (w metrach).");
-        return;
-      }
-      console.log("Wybrana kategoria:", category, "Promień:", radius);
-      fetchPOIs(category, radius);
-    });
-  </script>
+  <!-- Plik inicjalizacji mapy -->
+  <script src="{{ url_for('static', filename='map_init.js') }}"></script>
+  <!-- Plik z funkcjami Overpass API -->
+  <script src="{{ url_for('static', filename='overpass.js') }}"></script>
 </body>
 </html>
