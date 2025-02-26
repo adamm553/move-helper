@@ -35,7 +35,10 @@ function fetchPOIs(category, radius) {
       var data = JSON.parse(text);
       markersLayer.clearLayers(); 
       
-      data.elements.forEach(function(element) {
+      var resultsTableBody = document.querySelector("#results-table tbody");
+      resultsTableBody.innerHTML = ""; 
+
+      var results = data.elements.map(function(element) {
         var elLat, elLon;
         if (element.type === "node") {
           elLat = element.lat;
@@ -48,12 +51,37 @@ function fetchPOIs(category, radius) {
           var popupText = (element.tags && element.tags.name) 
             ? element.tags.name 
             : (category.charAt(0).toUpperCase() + category.slice(1));
-          L.marker([elLat, elLon]).addTo(markersLayer)
-            .bindPopup(popupText);
+          var distance = calculateDistance(center.lat, center.lng, elLat, elLon);
+          return {
+            name: popupText,
+            category: category,
+            coordinates: `${elLat.toFixed(5)}, ${elLon.toFixed(5)}`,
+            distance: distance,
+            lat: elLat,
+            lon: elLon
+          };
         }
+      }).filter(Boolean);
+
+      results.sort(function(a, b) {
+        return a.distance - b.distance;
+      });
+
+      results.forEach(function(result) {
+        L.marker([result.lat, result.lon]).addTo(markersLayer)
+          .bindPopup(result.name);
+
+        var row = resultsTableBody.insertRow();
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.textContent = result.name;
+        cell2.textContent = result.category;
+        cell3.textContent = result.coordinates;
+        cell4.textContent = result.distance.toFixed(2) + " km";
       });
       
-      // Ukrywamy loader po zakończeniu
       document.getElementById('loader-overlay').style.display = "none";
       
     } catch (e) {
@@ -66,4 +94,16 @@ function fetchPOIs(category, radius) {
     console.error("Błąd podczas pobierania danych:", error);
     document.getElementById('loader').style.display = "none";
   });
+}
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+  var R = 6371; 
+  var dLat = (lat2 - lat1) * Math.PI / 180;
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = 
+    0.5 - Math.cos(dLat)/2 + 
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    (1 - Math.cos(dLon))/2;
+
+  return R * 2 * Math.asin(Math.sqrt(a));
 }
