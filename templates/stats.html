@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Statystyki</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_stats.css') }}">
 </head>
 <body>
     <h1>Statystyki</h1>
-    <p>Strona ze statystykami jest w budowie.</p>
+    {% if address %}
+        <p>Adres: {{ address }}</p>
+    {% endif %}
+    <div class="form-container">
+        <form method="POST" action="/stats">
+            <label for="radius">Promień (w kilometrach):</label>
+            <input type="text" id="radius" name="radius" placeholder="Wpisz promień"><br>
+            <label>
+                <input type="checkbox" name="category" value="restaurant"> Restauracja
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="school"> Szkoła
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="hospital"> Szpital
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="bar"> Bar
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="cafe"> Kawiarnia
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="place_of_worship"> Kościół
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="fast_food"> Restauracja fast food
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="college"> Uczelnia
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="driving_school"> Szkoła jazdy
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="kindergarten"> Przedszkole
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="parking"> Parking
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="pharmacy"> Apteka
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="casino"> Kasyno
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="cinema"> Kino
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="courthouse"> Sąd
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="fire_station"> Straż pożarna
+            </label><br>
+            <label>
+                <input type="checkbox" name="category" value="police"> Policja
+            </label><br>
+            <input type="submit" value="Pokaż statystyki">
+        </form>
+        {% if stats_data %}
+            <h2>Wyniki:</h2>
+            <ul>
+                {% for category, count in stats_data.items() %}
+                    <li>{{ category }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 </body>
 </html>
