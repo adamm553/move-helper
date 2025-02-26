@@ -36,7 +36,7 @@ function fetchPOIs(category, radius) {
       markersLayer.clearLayers(); 
       
       var resultsTableBody = document.querySelector("#results-table tbody");
-      resultsTableBody.innerHTML = ""; // Wyczyść poprzednie wyniki
+      resultsTableBody.innerHTML = ""; 
 
       var results = data.elements.map(function(element) {
         var elLat, elLon;
@@ -63,7 +63,6 @@ function fetchPOIs(category, radius) {
         }
       }).filter(Boolean);
 
-      // Sortuj wyniki według odległości
       results.sort(function(a, b) {
         return a.distance - b.distance;
       });
@@ -72,7 +71,6 @@ function fetchPOIs(category, radius) {
         L.marker([result.lat, result.lon]).addTo(markersLayer)
           .bindPopup(result.name);
 
-        // Dodaj wynik do tabeli
         var row = resultsTableBody.insertRow();
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
@@ -81,7 +79,7 @@ function fetchPOIs(category, radius) {
         cell1.textContent = result.name;
         cell2.textContent = result.category;
         cell3.textContent = result.coordinates;
-        cell4.textContent = result.distance.toFixed(2);
+        cell4.textContent = result.distance.toFixed(2) + " km";
       });
       
       document.getElementById('loader-overlay').style.display = "none";
@@ -99,7 +97,7 @@ function fetchPOIs(category, radius) {
 }
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
-  var R = 6371; // Promień Ziemi w km
+  var R = 6371; 
   var dLat = (lat2 - lat1) * Math.PI / 180;
   var dLon = (lon2 - lon1) * Math.PI / 180;
   var a = 
