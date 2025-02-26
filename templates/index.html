@@ -39,8 +39,12 @@
             <label for="numer">Numer budynku:</label>
             <input type="text" id="numer" name="numer" placeholder="Wpisz numer budynku">
 
-            <input type="submit" value="Wyślij">
+            <div class="button-container">
+                <button class="button" id="map-btn">Przejdź do mapy</button>
+                <button class="button" id="stats-btn">Przejdź do statystyk</button>
+            </div>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
 </body>
 </html>

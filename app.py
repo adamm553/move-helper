@@ -39,7 +39,10 @@ def show_map():
     lon = request.args.get('lon')
     return render_template('map.html', lat=lat, lon=lon)
 
+@app.route('/stats')
+def stats():
+    return render_template('stats.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
 
-    
