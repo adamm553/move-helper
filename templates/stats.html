@@ -7,9 +7,6 @@
 </head>
 <body>
     <h1>Statystyki</h1>
-    {% if address %}
-        <p>Adres: {{ address }}</p>
-    {% endif %}
     <div class="form-container">
         <form method="POST" action="/stats">
             <label for="radius">Promień (w kilometrach):</label>
@@ -74,6 +71,7 @@
                     <li>{{ category }}: {{ count }}</li>
                 {% endfor %}
             </ul>
+            <img src="data:image/png;base64,{{ chart }}" alt="Wykres statystyk">
         {% endif %}
     </div>
 </body>

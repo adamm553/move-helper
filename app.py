@@ -1,11 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, send_file
 import requests
-import logging
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io
+import base64
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-logging.basicConfig(level=logging.DEBUG)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -58,12 +64,12 @@ def stats():
         if not lat or not lon:
             return "Nie znaleziono współrzędnych dla podanego adresu.", 400
         stats_data = fetch_stats(lat, lon, categories, radius)
-        return render_template('stats.html', stats_data=stats_data, categories=categories, address=session.get('full_address'))
+        img = generate_chart(stats_data)
+        return render_template('stats.html', stats_data=stats_data, categories=categories, address=session.get('full_address'), chart=img)
     return render_template('stats.html', address=session.get('full_address'))
 
 def fetch_stats(lat, lon, categories, radius):
     stats_data = {}
-    print(stats_data)
     for category in categories:
         query = f"""
         [out:json][timeout:25];
@@ -74,13 +80,30 @@ def fetch_stats(lat, lon, categories, radius):
         );
         out body;
         """
-        logging.debug(f"Query for category '{category}': {query}")
         response = requests.post("https://overpass-api.de/api/interpreter", data=query)
         data = response.json()
-        logging.debug(f"Response for category '{category}': {data}")
         count = len(data['elements'])
         stats_data[category] = count
     return stats_data
+
+def generate_chart(stats_data):
+    categories = list(stats_data.keys())
+    counts = list(stats_data.values())
+
+    plt.figure(figsize=(10, 5))
+    plt.bar(categories, counts, color='skyblue')
+    plt.xlabel('Kategorie')
+    plt.ylabel('Ilość')
+    plt.title('Ilość danych kategorii w wybranym promieniu')
+    plt.xticks(rotation=45, ha='right')
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    buf.seek(0)
+    img = base64.b64encode(buf.getvalue()).decode('utf-8')
+    buf.close()
+
+    return img
 
 if __name__ == '__main__':
     app.run(debug=True)
