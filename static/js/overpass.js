@@ -8,8 +8,7 @@ document.getElementById('find-btn').addEventListener('click', function() {
   var radius = parseFloat(radiusKm) * 1000;
   console.log("Wybrana kategoria:", category, "Promień (w metrach):", radius);
   
-  // Pokazujemy loader
-  document.getElementById('loader').style.display = "block";
+  document.getElementById('loader-overlay').style.display = "flex";
   
   fetchPOIs(category, radius);
 });
@@ -55,7 +54,7 @@ function fetchPOIs(category, radius) {
       });
       
       // Ukrywamy loader po zakończeniu
-      document.getElementById('loader').style.display = "none";
+      document.getElementById('loader-overlay').style.display = "none";
       
     } catch (e) {
       console.error("Błąd podczas parsowania danych:", e);
