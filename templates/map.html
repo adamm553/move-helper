@@ -42,6 +42,9 @@
       <button id="find-btn">Znajdź pod promieniem</button>
     </div>
   </div>
+
+  <div id="loader" class="loader" style="display:none;"></div>
+  <div id="results" style="padding: 20px"></div>
   
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
   <script src="{{ url_for('static', filename='js/map_init.js') }}"></script>

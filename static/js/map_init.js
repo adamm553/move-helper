@@ -9,7 +9,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(myMap);
 
 L.marker([lat, lon]).addTo(myMap)
-  .bindPopup('Tutaj jest adres')
+  .bindPopup('Twój adres')
   .openPopup();
 
 window.myMap = myMap;
+window.markersLayer = L.layerGroup().addTo(window.myMap);
+
