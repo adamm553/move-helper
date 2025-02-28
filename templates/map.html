@@ -40,6 +40,7 @@
       <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
 
       <button id="find-btn">Znajdź pod promieniem</button>
+      <button id="stats-btn">Przejdź do statystyk</button>
     </div>
   </div>
 
@@ -65,5 +66,6 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
   <script src="{{ url_for('static', filename='js/map_init.js') }}"></script>
   <script src="{{ url_for('static', filename='js/overpass.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
 </body>
 </html>
