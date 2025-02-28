@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Statystyki</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_stats.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/modal.css') }}">
 </head>
 <body>
     <h1>Statystyki</h1>
     <div class="form-container">
-        <form method="POST" action="/stats">
+        <form id="statsForm">
             <label for="radius">Promień (w kilometrach):</label>
             <input type="text" id="radius" name="radius" placeholder="Wpisz promień"><br>
             <label>
@@ -64,15 +65,18 @@
             </label><br>
             <input type="submit" value="Pokaż statystyki">
         </form>
-        {% if stats_data %}
-            <h2>Wyniki:</h2>
-            <ul>
-                {% for category, count in stats_data.items() %}
-                    <li>{{ category }}: {{ count }}</li>
-                {% endfor %}
-            </ul>
-            <img src="data:image/png;base64,{{ chart }}" alt="Wykres statystyk">
-        {% endif %}
     </div>
+
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Wyniki:</h2>
+            <ul id="resultsList">
+            </ul>
+            <img id="chartImage" src="" alt="Wykres statystyk">
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
 </body>
 </html>

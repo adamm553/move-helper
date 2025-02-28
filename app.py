@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 import requests
 import matplotlib
 matplotlib.use('Agg')
@@ -57,14 +57,20 @@ def stats():
         categories = request.form.getlist('category')
         radius_km = request.form.get('radius')
         if not radius_km or not radius_km.isdigit():
+            if request.accept_mimetypes.accept_json:
+                return jsonify(error="Proszę podać poprawny promień (w kilometrach)."), 400
             return "Proszę podać poprawny promień (w kilometrach).", 400
         radius = float(radius_km) * 1000
         lat = session.get('lat')
         lon = session.get('lon')
         if not lat or not lon:
+            if request.accept_mimetypes.accept_json:
+                return jsonify(error="Nie znaleziono współrzędnych dla podanego adresu."), 400
             return "Nie znaleziono współrzędnych dla podanego adresu.", 400
         stats_data = fetch_stats(lat, lon, categories, radius)
         img = generate_chart(stats_data)
+        if request.accept_mimetypes.accept_json:
+            return jsonify(stats_data=stats_data, chart=img)
         return render_template('stats.html', stats_data=stats_data, categories=categories, address=session.get('full_address'), chart=img)
     return render_template('stats.html', address=session.get('full_address'))
 
