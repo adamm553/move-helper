@@ -1,12 +1,26 @@
-document.querySelector('form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    document.getElementById('popup').style.display = 'block';
-});
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.querySelector('form');
+    var mapBtn = document.getElementById('map-btn');
+    var statsBtn = document.getElementById('stats-btn');
 
-document.getElementById('map-btn').addEventListener('click', function() {
-    document.querySelector('form').submit();
-});
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            document.getElementById('popup').style.display = 'block';
+        });
+    }
 
-document.getElementById('stats-btn').addEventListener('click', function() {
-    window.location.href = '/stats';
+    if (mapBtn) {
+        mapBtn.addEventListener('click', function() {
+            if (form) {
+                form.submit();
+            }
+        });
+    }
+
+    if (statsBtn) {
+        statsBtn.addEventListener('click', function() {
+            window.location.href = '/stats';
+        });
+    }
 });
