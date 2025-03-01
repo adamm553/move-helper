@@ -5,7 +5,7 @@
   <title>Mapa z kategoriami</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles_map.css') }}">
-
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/checkbox_styles.css') }}">
 </head>
 <body>
   <h2 style="text-align: center;">Mapa</h2>
@@ -17,27 +17,77 @@
       <h2>Kategorie</h2>
       <label for="kategoria">Wybierz kategorie:</label>
       <div id="kategoria">
-        <label><input type="checkbox" name="kategoria" value="restaurant"> Restauracja</label><br>
-        <label><input type="checkbox" name="kategoria" value="school"> Szkoła</label><br>
-        <label><input type="checkbox" name="kategoria" value="hospital"> Szpital</label><br>
-        <label><input type="checkbox" name="kategoria" value="bar"> Bar</label><br>
-        <label><input type="checkbox" name="kategoria" value="cafe"> Kawiarnia</label><br>
-        <label><input type="checkbox" name="kategoria" value="place_of_worship"> Kościół</label><br>
-        <label><input type="checkbox" name="kategoria" value="fast_food"> Restauracja fast food</label><br>
-        <label><input type="checkbox" name="kategoria" value="college"> Uczelnia</label><br>
-        <label><input type="checkbox" name="kategoria" value="driving_school"> Szkoła jazdy</label><br>
-        <label><input type="checkbox" name="kategoria" value="kindergarten"> Przedszkole</label><br>
-        <label><input type="checkbox" name="kategoria" value="parking"> Parking</label><br>
-        <label><input type="checkbox" name="kategoria" value="pharmacy"> Apteka</label><br>
-        <label><input type="checkbox" name="kategoria" value="casino"> Kasyno</label><br>
-        <label><input type="checkbox" name="kategoria" value="cinema"> Kino</label><br>
-        <label><input type="checkbox" name="kategoria" value="courthouse"> Sąd</label><br>
-        <label><input type="checkbox" name="kategoria" value="fire_station"> Straz pozarna</label><br>
-        <label><input type="checkbox" name="kategoria" value="police"> Policja</label><br>
+        <div class="checkbox-wrapper">
+          <input id="restaurant" type="checkbox" class="switch" name="kategoria" value="restaurant">
+          <label for="restaurant">Restauracja</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="school" type="checkbox" class="switch" name="kategoria" value="school">
+          <label for="school">Szkoła</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="hospital" type="checkbox" class="switch" name="kategoria" value="hospital">
+          <label for="hospital">Szpital</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="bar" type="checkbox" class="switch" name="kategoria" value="bar">
+          <label for="bar">Bar</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="cafe" type="checkbox" class="switch" name="kategoria" value="cafe">
+          <label for="cafe">Kawiarnia</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="place_of_worship" type="checkbox" class="switch" name="kategoria" value="place_of_worship">
+          <label for="place_of_worship">Kościół</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="fast_food" type="checkbox" class="switch" name="kategoria" value="fast_food">
+          <label for="fast_food">Restauracja fast food</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="college" type="checkbox" class="switch" name="kategoria" value="college">
+          <label for="college">Uczelnia</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="driving_school" type="checkbox" class="switch" name="kategoria" value="driving_school">
+          <label for="driving_school">Szkoła jazdy</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="kindergarten" type="checkbox" class="switch" name="kategoria" value="kindergarten">
+          <label for="kindergarten">Przedszkole</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="parking" type="checkbox" class="switch" name="kategoria" value="parking">
+          <label for="parking">Parking</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="pharmacy" type="checkbox" class="switch" name="kategoria" value="pharmacy">
+          <label for="pharmacy">Apteka</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="casino" type="checkbox" class="switch" name="kategoria" value="casino">
+          <label for="casino">Kasyno</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="cinema" type="checkbox" class="switch" name="kategoria" value="cinema">
+          <label for="cinema">Kino</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="courthouse" type="checkbox" class="switch" name="kategoria" value="courthouse">
+          <label for="courthouse">Sąd</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="fire_station" type="checkbox" class="switch" name="kategoria" value="fire_station">
+          <label for="fire_station">Straz pozarna</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="police" type="checkbox" class="switch" name="kategoria" value="police">
+          <label for="police">Policja</label>
+        </div>
       </div>
 
-      <label for="radius">Promień (w kilometrach):</label>
-      <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
+      <input type="text" id="radius" name="radius" placeholder="Wpisz promień (km)">
 
       <button id="find-btn">Znajdź pod promieniem</button>
       <button id="stats-btn">Przejdź do statystyk</button>

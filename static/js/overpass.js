@@ -101,7 +101,7 @@ function fetchPOIs(category, radius) {
         cell1.textContent = result.name;
         cell2.textContent = result.category;
         cell3.textContent = result.coordinates;
-        cell4.textContent = result.distance.toFixed(2) + " km";
+        cell4.textContent = (result.distance / 1000).toFixed(2) + " km";
       });
       
       document.getElementById('loader-overlay').style.display = "none";
