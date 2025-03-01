@@ -1,17 +1,38 @@
 document.getElementById('find-btn').addEventListener('click', function() {
-  var category = document.getElementById('kategoria').value;
+  var categories = Array.from(document.querySelectorAll('#kategoria input:checked')).map(input => input.value);
   var radiusKm = document.getElementById('radius').value;
   if (!radiusKm || isNaN(radiusKm)) {
     alert("Proszę podać poprawny promień (w kilometrach).");
     return;
   }
   var radius = parseFloat(radiusKm) * 1000;
-  console.log("Wybrana kategoria:", category, "Promień (w metrach):", radius);
+  console.log("Wybrane kategorie:", categories, "Promień (w metrach):", radius);
   
   document.getElementById('loader-overlay').style.display = "flex";
   
-  fetchPOIs(category, radius);
+  markersLayer.clearLayers(); // Przenieś to tutaj, aby wyczyścić markery przed dodaniem nowych
+  categories.forEach(category => fetchPOIs(category, radius));
 });
+
+const categoryColors = {
+  restaurant: 'red',
+  school: 'blue',
+  hospital: 'green',
+  bar: 'purple',
+  cafe: 'orange',
+  place_of_worship: 'yellow',
+  fast_food: 'pink',
+  college: 'cyan',
+  driving_school: 'magenta',
+  kindergarten: 'lime',
+  parking: 'brown',
+  pharmacy: 'teal',
+  casino: 'navy',
+  cinema: 'maroon',
+  courthouse: 'olive',
+  fire_station: 'coral',
+  police: 'gold'
+};
 
 function fetchPOIs(category, radius) {
   var center = window.myMap.getCenter();
@@ -33,10 +54,8 @@ function fetchPOIs(category, radius) {
   .then(text => {
     try {
       var data = JSON.parse(text);
-      markersLayer.clearLayers(); 
       
       var resultsTableBody = document.querySelector("#results-table tbody");
-      resultsTableBody.innerHTML = ""; 
 
       var results = data.elements.map(function(element) {
         var elLat, elLon;
@@ -68,7 +87,10 @@ function fetchPOIs(category, radius) {
       });
 
       results.forEach(function(result) {
-        L.marker([result.lat, result.lon]).addTo(markersLayer)
+        L.circleMarker([result.lat, result.lon], {
+          color: categoryColors[result.category] || 'black',
+          radius: 8
+        }).addTo(markersLayer)
           .bindPopup(result.name);
 
         var row = resultsTableBody.insertRow();
@@ -99,7 +121,7 @@ function fetchPOIs(category, radius) {
 function calculateDistance(lat1, lon1, lat2, lon2) {
   var R = 6371; 
   var dLat = (lat2 - lat1) * Math.PI / 180;
-  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var dLon = (lat2 - lon1) * Math.PI / 180;
   var a = 
     0.5 - Math.cos(dLat)/2 + 
     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
