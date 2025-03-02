@@ -1,4 +1,4 @@
-var modal = document.getElementById("resultsModal");
+var modal = document.getElementById("chart-modal");
 var span = document.getElementsByClassName("close")[0];
 
 span.onclick = function() {
