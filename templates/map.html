@@ -5,7 +5,44 @@
   <title>Mapa z kategoriami</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" crossorigin=""/>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles_map.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/checkbox_styles.css') }}">
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000; /* Zwiększ z-index, aby modal był nad mapą */
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
+    }
 
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <h2 style="text-align: center;">Mapa</h2>
@@ -15,38 +52,88 @@
     </div>
     <div class="side-panel">
       <h2>Kategorie</h2>
-      <label for="kategoria">Wybierz kategorię:</label>
-      <select id="kategoria" name="kategoria">
-        <option value="restaurant">Restauracja</option>
-        <option value="school">Szkoła</option>
-        <option value="hospital">Szpital</option>
-        <option value="bar">Bar</option>
-        <option value="cafe">Kawiarnia</option>
-        <option value="place_of_worship">Kościół</option>
-        <option value="fast_food">Restauracja fast food</option>
-        <option value="college">Uczelnia</option>
-        <option value="driving_school">Szkoła jazdy</option>
-        <option value="kindergarten">Przedszkole</option>
-        <option value="parking">Parking</option>
-        <option value="pharmacy">Apteka</option>
-        <option value="casino">Kasyno</option>
-        <option value="cinema">Kino</option>
-        <option value="courthouse">Sąd</option>
-        <option value="fire_station">Straz pozarna</option>
-        <option value="police">Policja</option>
-      </select>
+      <label for="kategoria">Wybierz kategorie:</label>
+      <div id="kategoria">
+        <div class="checkbox-wrapper">
+          <input id="restaurant" type="checkbox" class="switch" name="kategoria" value="restaurant">
+          <label for="restaurant">Restauracja</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="school" type="checkbox" class="switch" name="kategoria" value="school">
+          <label for="school">Szkoła</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="hospital" type="checkbox" class="switch" name="kategoria" value="hospital">
+          <label for="hospital">Szpital</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="bar" type="checkbox" class="switch" name="kategoria" value="bar">
+          <label for="bar">Bar</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="cafe" type="checkbox" class="switch" name="kategoria" value="cafe">
+          <label for="cafe">Kawiarnia</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="place_of_worship" type="checkbox" class="switch" name="kategoria" value="place_of_worship">
+          <label for="place_of_worship">Kościół</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="fast_food" type="checkbox" class="switch" name="kategoria" value="fast_food">
+          <label for="fast_food">Restauracja fast food</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="college" type="checkbox" class="switch" name="kategoria" value="college">
+          <label for="college">Uczelnia</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="driving_school" type="checkbox" class="switch" name="kategoria" value="driving_school">
+          <label for="driving_school">Szkoła jazdy</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="kindergarten" type="checkbox" class="switch" name="kategoria" value="kindergarten">
+          <label for="kindergarten">Przedszkole</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="parking" type="checkbox" class="switch" name="kategoria" value="parking">
+          <label for="parking">Parking</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="pharmacy" type="checkbox" class="switch" name="kategoria" value="pharmacy">
+          <label for="pharmacy">Apteka</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="casino" type="checkbox" class="switch" name="kategoria" value="casino">
+          <label for="casino">Kasyno</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="cinema" type="checkbox" class="switch" name="kategoria" value="cinema">
+          <label for="cinema">Kino</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="courthouse" type="checkbox" class="switch" name="kategoria" value="courthouse">
+          <label for="courthouse">Sąd</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="fire_station" type="checkbox" class="switch" name="kategoria" value="fire_station">
+          <label for="fire_station">Straz pozarna</label>
+        </div>
+        <div class="checkbox-wrapper">
+          <input id="police" type="checkbox" class="switch" name="kategoria" value="police">
+          <label for="police">Policja</label>
+        </div>
+      </div>
 
-      <label for="radius">Promień (w kilometrach):</label>
-      <input type="text" id="radius" name="radius" placeholder="Wpisz promień">
+      <input type="text" id="radius" name="radius" placeholder="Wpisz promień (km)">
 
       <button id="find-btn">Znajdź pod promieniem</button>
-      <button id="stats-btn">Przejdź do statystyk</button>
+      <button id="stats-btn" type="button">Przejdź do statystyk</button>
     </div>
   </div>
 
-<div id="loader-overlay" style="display: none;">
-  <div id="loader" class="loader"></div>
-</div>
+  <div id="loader-overlay" style="display: none;">
+    <div id="loader" class="loader"></div>
+  </div>
   
   <div id="results" style="padding: 20px; max-height: 300px; overflow-y: auto;">
     <table id="results-table" style="width: 100%; border-collapse: collapse;">
@@ -62,10 +149,19 @@
       </tbody>
     </table>
   </div>
+
+  <div id="chart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Statystyki</h2>
+      <img id="chartImage" src="" alt="Wykres statystyk" style="width: 100%; height: auto;">
+    </div>
+  </div>
   
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" crossorigin=""></script>
   <script src="{{ url_for('static', filename='js/map_init.js') }}"></script>
   <script src="{{ url_for('static', filename='js/overpass.js') }}"></script>
   <script src="{{ url_for('static', filename='js/popup.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
 </body>
 </html>

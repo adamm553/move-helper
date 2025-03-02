@@ -51,28 +51,20 @@ def show_map():
     lon = request.args.get('lon')
     return render_template('map.html', lat=lat, lon=lon)
 
-@app.route('/stats', methods=['GET', 'POST'])
+@app.route('/stats', methods=['POST'])
 def stats():
-    if request.method == 'POST':
-        categories = request.form.getlist('category')
-        radius_km = request.form.get('radius')
-        if not radius_km or not radius_km.isdigit():
-            if request.accept_mimetypes.accept_json:
-                return jsonify(error="Proszę podać poprawny promień (w kilometrach)."), 400
-            return "Proszę podać poprawny promień (w kilometrach).", 400
-        radius = float(radius_km) * 1000
-        lat = session.get('lat')
-        lon = session.get('lon')
-        if not lat or not lon:
-            if request.accept_mimetypes.accept_json:
-                return jsonify(error="Nie znaleziono współrzędnych dla podanego adresu."), 400
-            return "Nie znaleziono współrzędnych dla podanego adresu.", 400
-        stats_data = fetch_stats(lat, lon, categories, radius)
-        img = generate_chart(stats_data)
-        if request.accept_mimetypes.accept_json:
-            return jsonify(stats_data=stats_data, chart=img)
-        return render_template('stats.html', stats_data=stats_data, categories=categories, address=session.get('full_address'), chart=img)
-    return render_template('stats.html', address=session.get('full_address'))
+    data = request.get_json()
+    categories = data.get('categories')
+    radius = data.get('radius')
+    lat = data.get('lat')
+    lon = data.get('lon')
+
+    if not categories or not radius or not lat or not lon:
+        return jsonify(error="Brak wymaganych danych."), 400
+
+    stats_data = fetch_stats(lat, lon, categories, radius)
+    img = generate_chart(stats_data)
+    return jsonify(stats_data=stats_data, chart=img)
 
 def fetch_stats(lat, lon, categories, radius):
     stats_data = {}
@@ -96,7 +88,7 @@ def generate_chart(stats_data):
     categories = list(stats_data.keys())
     counts = list(stats_data.values())
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(20, 10))
     plt.bar(categories, counts, color='skyblue')
     plt.xlabel('Kategorie')
     plt.ylabel('Ilość')
