@@ -88,7 +88,7 @@ def generate_chart(stats_data):
     categories = list(stats_data.keys())
     counts = list(stats_data.values())
 
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(20, 10))
     plt.bar(categories, counts, color='skyblue')
     plt.xlabel('Kategorie')
     plt.ylabel('Ilość')
